@@ -1,4 +1,6 @@
 const request = require("request");
+const cheerio = require('cheerio');
+const art = require('../models/Article');
 
 module.exports = function(router) {
     console.log("Successfully loaded routes");
@@ -42,15 +44,16 @@ module.exports = function(router) {
                 // If this title element had both a title and a link
                 if (title && link) {
                     // Save the data in the scrapedData db
-                    db.scrapedData.save({
+                    let theArticle = new art.Article({
                             title: title,
                             link: link
-                        },
+                        });
+                    theArticle.save(
                         function(error, saved) {
                             if (error) {
-                                console.log(error);
+                                console.log('there was error');
                             } else {
-                                console.log(saved);
+                                console.log('yay it saved');
                             }
                         });
                 };
